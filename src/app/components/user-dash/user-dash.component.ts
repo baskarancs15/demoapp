@@ -29,6 +29,10 @@ export class UserDashComponent implements OnInit {
     this.postservice.getAllpost().subscribe(res => {
       console.log(res, "Res created successfully");
       this.postList = res;
+      this.postList.sort(
+        (a, b) =>
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+      );
       console.log(this.postList, "Res created successfully");
     });
   }
