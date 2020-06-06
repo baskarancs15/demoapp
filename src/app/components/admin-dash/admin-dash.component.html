@@ -1,0 +1,132 @@
+<div class="container">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand">Admin Dashboard</a>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <button
+            class="uk-button uk-button-default uk-margin-small-left"
+            type="button"
+            uk-toggle="target: #modal-example"
+          >
+            Create Post
+          </button>
+        </li>
+      </ul>
+      <form class="form-inline my-2 my-lg-0">
+        <button
+          class="uk-button uk-button-default uk-margin-small-right"
+          type="button"
+          (click)="logout()"
+        >
+          logout
+        </button>
+      </form>
+    </div>
+  </nav>
+
+  <!-- This is the modal -->
+  <div id="modal-example" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body">
+      <h2 class="uk-modal-title">Create Post</h2>
+      <form>
+        <div class="uk-margin">
+          <div class="uk-inline uk-width-1-1">
+            <span class="uk-form-icon" uk-icon="icon: mail"></span>
+            <input
+              class="uk-input uk-form-large"
+              type="email"
+              name="title"
+              placeholder="Post Title"
+              [(ngModel)]="title"
+            />
+          </div>
+        </div>
+        <div class="uk-margin">
+          <div class="uk-inline uk-width-1-1">
+            <span class="uk-form-icon" uk-icon="icon: lock"></span>
+            <textarea
+              class="uk-textarea"
+              rows="5"
+              name="description"
+              placeholder="say something about this post"
+              [(ngModel)]="description"
+            ></textarea>
+          </div>
+        </div>
+        <div class="uk-margin">
+          <input type="file" (change)="onFileSelected($event)" />
+        </div>
+      </form>
+      <p class="uk-text-right">
+        <button
+          class="uk-button uk-button-default uk-modal-close"
+          type="button"
+        >
+          Cancel
+        </button>
+        <button
+          class="uk-button uk-button-primary"
+          type="button"
+          (click)="createPost()"
+        >
+          Publish
+        </button>
+      </p>
+    </div>
+  </div>
+  <br />
+
+  <div class="card" *ngFor="let post of postList">
+    <div class="card-header">
+      <img
+        class="img-circle"
+        src="https://img.icons8.com/color/36/000000/guest-male.png"
+        alt="User Image"
+      /><span style="font-weight: bold;"
+        >Public - {{ post.created_at | date: "medium" }}</span
+      >
+    </div>
+    <div class="card-body">
+      <h5 class="card-title">{{ post.title }}</h5>
+      <p class="card-text">
+        {{ post.description }}
+      </p>
+      <br />
+      <h2>Leave Your Comments Here</h2>
+      <textarea
+        class="uk-textarea"
+        rows="5"
+        name="description"
+        placeholder="say something about this post"
+        [(ngModel)]="commentdescription"
+      ></textarea>
+      <br />
+      <br />
+      <a class="btn btn-primary" (click)="addComment(post._id)">Add Comments</a>
+    </div>
+    <div
+      class="uk-card uk-card-default uk-card-body "
+      *ngIf="post.comment.length > 0"
+    >
+      <h3 class="uk-card-title">Recent Comments</h3>
+      <!-- <p *ngFor="let comment of post.comment"></p> -->
+      <div class="comment-text" *ngFor="let comment of post.comment">
+        <img
+          class="img-circle img-sm"
+          src="https://img.icons8.com/office/36/000000/person-male.png"
+          alt="User Image"
+        />&nbsp;
+        <span class="username" style="color: teal;font-weight: bold;">
+          {{ comment.comment_by }}&nbsp;<span class="text-muted pull-right">{{
+            comment.comment_created_at | date: "medium"
+          }}</span> </span
+        >&nbsp;
+        {{ comment.description }}
+        <hr />
+      </div>
+    </div>
+  </div>
+  <br />
+</div>
